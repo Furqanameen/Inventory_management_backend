@@ -5,6 +5,19 @@ const { publicFieldsPlugin } = require('./plugins/serializer')
 
 const profileSchema = new mongoose.Schema(
   {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      index: true,
+      lowercase: true,
+      trim: true,
+    },
     role: {
       type: String,
       enum: ['superadmin', 'admin', 'staff'],
@@ -31,7 +44,13 @@ const profileSchema = new mongoose.Schema(
 
 profileSchema.plugin(jwtPlugin)
 profileSchema.plugin(softDeletePlugin)
-profileSchema.plugin(publicFieldsPlugin, ['role', 'user', 'store'])
+profileSchema.plugin(publicFieldsPlugin, [
+  'name',
+  'email',
+  'role',
+  'user',
+  'store',
+])
 
 profileSchema.index({ user: 1, store: 1 }, { unique: true })
 
