@@ -46,6 +46,10 @@ module.exports = async (ctx) => {
     await location.restore()
   }
 
+  if (deleted === 'true') {
+    await location.softDelete()
+  }
+
   await location.save()
 
   if (name !== undefined) {

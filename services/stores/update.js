@@ -82,6 +82,10 @@ module.exports = async (ctx) => {
     await store.restore()
   }
 
+  if (deleted === 'true') {
+    await store.softDelete()
+  }
+
   await store.save()
 
   return await Store.findById(store._id)

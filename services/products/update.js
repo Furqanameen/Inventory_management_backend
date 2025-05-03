@@ -92,6 +92,9 @@ module.exports = async (ctx) => {
   if (deleted === 'false') {
     await product.restore()
   }
+  if (deleted === 'true') {
+    await product.softDelete()
+  }
 
   await product.save()
 
