@@ -1,9 +1,10 @@
 const Joi = require('joi')
+const Store = require('../../models/store')
 const Location = require('../../models/location')
+const attachSUProfilesService = require('../users/attachsuprofiles')
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
 const { checkPermissions } = require('../../utils/auth')
-const Store = require('../../models/store')
 
 module.exports = async (ctx) => {
   await checkPermissions(ctx, ['superadmin'])
@@ -49,6 +50,7 @@ module.exports = async (ctx) => {
   store.location = location._id
 
   await store.save()
+  await attachSUProfilesService()
 
   return await Store.findById(store._id)
     .populate({

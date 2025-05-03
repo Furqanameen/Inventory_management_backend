@@ -21,6 +21,10 @@ module.exports = async () => {
           role: 'superadmin',
         })
         await newProfile.save()
+        await User.updateOne(
+          { _id: user._id },
+          { $addToSet: { profiles: newProfile._id } }
+        ).exec()
       }
     }
   }
