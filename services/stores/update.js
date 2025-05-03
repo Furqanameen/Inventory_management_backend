@@ -8,18 +8,20 @@ const { checkPermissions } = require('../../utils/auth')
 module.exports = async (ctx) => {
   await checkPermissions(ctx, ['superadmin'])
 
-  const { _id, name, locationId } = ctx.request.data
+  const { _id, name, locationId, deleted } = ctx.request.data
 
   const schema = Joi.object({
     _id: Joi.string().hex().length(24).required(),
     name: Joi.string().optional(),
     locationId: Joi.string().hex().length(24).optional(),
+    deleted: Joi.boolean().optional(),
   })
 
   const { error } = await joiValidate(schema, {
     _id,
     name,
     locationId,
+    deleted,
   })
 
   if (error) {
@@ -74,6 +76,10 @@ module.exports = async (ctx) => {
 
     store.displayName = `${store.name} - ${location.name}`
     store.location = location._id
+  }
+
+  if (deleted === 'false') {
+    await store.restore()
   }
 
   await store.save()

@@ -8,7 +8,8 @@ const { checkPermissions } = require('../../utils/auth')
 module.exports = async (ctx) => {
   await checkPermissions(ctx, ['superadmin', 'admin'], true)
 
-  const { _id, name, sku, barcode, purchasePrice, salePrice } = ctx.request.data
+  const { _id, name, sku, barcode, purchasePrice, salePrice, deleted } =
+    ctx.request.data
 
   const schema = Joi.object({
     _id: Joi.string().hex().length(24).required(),
@@ -17,6 +18,7 @@ module.exports = async (ctx) => {
     barcode: Joi.string().optional(),
     purchasePrice: Joi.number().positive().optional(),
     salePrice: Joi.number().positive().optional(),
+    deleted: Joi.boolean().optional(),
   })
 
   const { error } = await joiValidate(schema, {
@@ -26,6 +28,7 @@ module.exports = async (ctx) => {
     barcode,
     purchasePrice,
     salePrice,
+    deleted,
   })
 
   if (error) {
@@ -85,6 +88,9 @@ module.exports = async (ctx) => {
   }
   if (salePrice !== undefined) {
     product.salePrice = salePrice
+  }
+  if (deleted === 'false') {
+    await product.restore()
   }
 
   await product.save()
