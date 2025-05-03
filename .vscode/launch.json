@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "command": "npm run start:dev",
+      "name": "Inventory Dev",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
+      "command": "npm run seed:dev",
+      "name": "Inventory Seed Dev",
+      "request": "launch",
+      "type": "node-terminal"
+    }
+  ]
+}
