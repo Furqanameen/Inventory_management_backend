@@ -38,7 +38,7 @@ const tryLoginByToken = async (token, profileId) => {
         .populate('store', Store.publicFields())
         .exec()
 
-      if (!profile || !profile?.store || profile?.store?.deleted) {
+      if (!profile) {
         throw new CustomError('Profile not found')
       }
     }
