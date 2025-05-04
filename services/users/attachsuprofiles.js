@@ -19,6 +19,8 @@ module.exports = async () => {
           user: user._id,
           store: store._id,
           role: 'superadmin',
+          name: user.name,
+          email: user.email,
         })
         await newProfile.save()
         await User.updateOne(

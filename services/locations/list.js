@@ -26,6 +26,23 @@ module.exports = async (ctx) => {
     filter.deleted = deleted
   }
 
+  if (data.search) {
+    const searchRegex = new RegExp(data.search, 'i') // case-insensitive
+
+    const searchLower = data.search.toLowerCase()
+
+    const orConditions = [{ name: searchRegex }]
+
+    if (searchLower === 'active') {
+      orConditions.push({ deleted: false })
+    }
+    if (searchLower === 'inactive') {
+      orConditions.push({ deleted: true })
+    }
+
+    filter.$or = orConditions
+  }
+
   const locationPromise = Location.find(filter)
     .select(Location.publicFields())
     .sort({ [sortBy]: order })

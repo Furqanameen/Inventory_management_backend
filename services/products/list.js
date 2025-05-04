@@ -36,6 +36,36 @@ module.exports = async (ctx) => {
     filter.deleted = deleted
   }
 
+  if (data.search) {
+    const searchRegex = new RegExp(data.search, 'i') // case-insensitive regex
+    const searchNumber = parseFloat(data.search)
+    const searchLower = data.search.toLowerCase()
+
+    const orConditions = [
+      { name: searchRegex },
+      { sku: searchRegex },
+      { barcode: searchRegex },
+    ]
+
+    // Only add numeric search conditions if search is a valid number
+    if (!isNaN(searchNumber)) {
+      orConditions.push(
+        { purchasePrice: searchNumber },
+        { salePrice: searchNumber },
+        { quantity: searchNumber }
+      )
+    }
+
+    if (searchLower === 'active') {
+      orConditions.push({ deleted: false })
+    }
+    if (searchLower === 'inactive') {
+      orConditions.push({ deleted: true })
+    }
+
+    filter.$or = orConditions
+  }
+
   const productPromise = Product.find(filter)
     .select(Product.publicFields())
     .sort({ [sortBy]: order })
