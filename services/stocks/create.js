@@ -8,7 +8,7 @@ const { joiValidate, joiError } = require('../../utils/joi')
 const { checkPermissions } = require('../../utils/auth')
 
 module.exports = async (ctx) => {
-  await checkPermissions(ctx, ['superadmin', 'admin'], true)
+  await checkPermissions(ctx, ['superadmin', 'admin', , 'staff'], true)
 
   const { productId, quantity, stockType, comment } = ctx.request.data
 

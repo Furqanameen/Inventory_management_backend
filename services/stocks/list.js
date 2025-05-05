@@ -4,7 +4,7 @@ const { pagyParams, pagyRes } = require('../../utils/pagination')
 const { checkPermissions } = require('../../utils/auth')
 
 module.exports = async (ctx) => {
-  await checkPermissions(ctx, ['superadmin', 'admin'], true)
+  await checkPermissions(ctx, ['superadmin', 'admin', 'staff'], true)
 
   const { data } = ctx.request
 
