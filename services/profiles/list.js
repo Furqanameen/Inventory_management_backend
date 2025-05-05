@@ -18,6 +18,7 @@ module.exports = async (ctx) => {
 
   const filter = {
     store: ctx.auth.profile.store._id,
+    role: { $ne: 'superadmin' },
   }
 
   if (name) {

@@ -3,6 +3,7 @@ const Joi = require('joi')
 const User = require('../../models/user')
 const Store = require('../../models/store')
 const Profile = require('../../models/profile')
+const Location = require('../../models/location')
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
 
@@ -44,6 +45,12 @@ module.exports = async (ctx) => {
             {
               path: 'store',
               select: Store.publicFields(),
+              populate: [
+                {
+                  path: 'location',
+                  select: Location.publicFields(),
+                },
+              ],
             },
           ],
         })

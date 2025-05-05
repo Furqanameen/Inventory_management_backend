@@ -60,5 +60,11 @@ module.exports = async (ctx) => {
   profile.store = ctx.auth.profile.store._id
 
   await profile.save()
+
+  await User.updateOne(
+    { _id: user._id },
+    { $addToSet: { profiles: profile._id } }
+  ).exec()
+
   return profile.publicObject()
 }

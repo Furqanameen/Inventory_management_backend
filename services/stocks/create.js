@@ -36,19 +36,14 @@ module.exports = async (ctx) => {
     throw new CustomError('Product not found', 404)
   }
 
-  // if it’s an “OUT” movement, require enough qty
   if (stockType === 'OUT') {
     if (product.quantity < quantity) {
       throw new CustomError('Insufficient stock for this product')
     }
     product.quantity -= quantity
-
-    // if it’s an “IN” movement, bump inventory up
   } else if (stockType === 'IN') {
     product.quantity += quantity
   }
-
-  console.log('ctx.auth.profile', ctx.auth.profile)
 
   const stock = new Stock()
   stock.product = product._id
