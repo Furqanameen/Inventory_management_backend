@@ -34,6 +34,16 @@ const stockMovementSchema = new mongoose.Schema(
       trim: true,
       default: null,
     },
+    profile: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Profile',
+      index: true,
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      index: true,
+    },
   },
   {
     timestamps: true,
@@ -48,6 +58,8 @@ stockMovementSchema.plugin(publicFieldsPlugin, [
   'quantity',
   'stockType',
   'comment',
+  'profile',
+  'user',
 ])
 
 const StockMovement = mongoose.model('StockMovement', stockMovementSchema)
